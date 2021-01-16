@@ -1,2 +1,5 @@
 conf.json
 data/
+github_token.txt
+.idea/
+src/src/__pycache__/

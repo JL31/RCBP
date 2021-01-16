@@ -1,36 +1,29 @@
-﻿# coding: utf-8
+﻿"""
+    Module qui contient le Controleur pour l'application des comptes
+"""
 
-""" Module qui contient le Controleur pour l'application des comptes """
-
-
-### Paramètres globaux
-
-__author__ = "Julien LEPAIN"
-__version__ = 1.0
-
-
-### Import des librairies
+# ======================================================================================================================
+# Import des librairies
+# ======================================================================================================================
 
 # Import des librairies graphiques
-from PyQt4 import QtGui, QtCore
-import Appli_comptes_IV
+from PyQt5 import QtGui, QtCore, QtWidgets
+import src.IHM.Appli_comptes_IV as Appli_comptes_IV
 
 # Import des librairies qui contiennent le modèle
-from LectureDuFichierDeConfiguration import LectureDuFichierDeConfiguration
-from ChargementDesDonnees import ChargementDesDonnees
-from ModeleComptes import ModeleComptes
-from ModeleBalance import ModeleBalance
-from ImportCSV import ImportCSV
-from ActionsAvantDeQuitterLApplication import ActionsAvantDeQuitterLApplication
-from CalculatricePourLesDeplacements import CalculatricePourLesDeplacements
-import SousClassementDesQValidators
-from OptionsPourLEnregistrement import OptionsPourLEnregistrement
+from src.src.LectureDuFichierDeConfiguration import LectureDuFichierDeConfiguration
+from src.src.ChargementDesDonnees import ChargementDesDonnees
+from src.src.ModeleComptes import ModeleComptes
+from src.src.ModeleBalance import ModeleBalance
+from src.src.ImportCSV import ImportCSV
+from src.src.ActionsAvantDeQuitterLApplication import ActionsAvantDeQuitterLApplication
+from src.src.CalculatricePourLesDeplacements import CalculatricePourLesDeplacements
+import src.src.SousClassementDesQValidators as SousClassementDesQValidators
+from src.src.OptionsPourLEnregistrement import OptionsPourLEnregistrement
 
-# Import des autres librairies
-import sys
+# Import des autres librairiesimport sys
 import os
 from datetime import datetime
-import shutil
 import webbrowser
 import numpy as np
 import pandas as pd
@@ -38,7 +31,7 @@ import pandas as pd
 
 ### Définitions des classes
 
-class Controleur(QtGui.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
+class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
     """
         Classe de lien entre la Vue et le Modèle
     """
@@ -135,7 +128,7 @@ class Controleur(QtGui.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         
         
         # Renvoie la taille de l'écran
-        taille_ecran = QtGui.QDesktopWidget().screenGeometry()
+        taille_ecran = QtWidgets.QDesktopWidget().screenGeometry()
         
         # Renvoie la taille de la fenêtre de l'application
         taille_fenetre = self.geometry()
@@ -433,7 +426,7 @@ class Controleur(QtGui.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         """
         
         # Création d'une instance QFileDialog pour demander à l'utilisateur de choisir l'emplacement du fichier
-        fichier_CSV = str(QtGui.QFileDialog.getOpenFileName(filter = self._filtre_fichier_a_importer))
+        fichier_CSV = str(QtWidgets.QFileDialog.getOpenFileName(filter=self._filtre_fichier_a_importer))
         
         # Vérification que l'utilisateur a bien rentré un nom pour le fichier
         if fichier_CSV:
@@ -492,16 +485,16 @@ class Controleur(QtGui.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         
         # On créé une instance de la classe QMessageBox
         
-        self._message_box_pour_sauvegarde_donnees = QtGui.QMessageBox()
+        self._message_box_pour_sauvegarde_donnees = QtWidgets.QMessageBox()
         
         # On configure l'instance créée (titre, icône, message, types de boutons et actiosn par défaut)
         
         self._message_box_pour_sauvegarde_donnees.setWindowTitle(u"Sauvegarde des données ?")
-        self._message_box_pour_sauvegarde_donnees.setIcon(QtGui.QMessageBox.Question)
+        self._message_box_pour_sauvegarde_donnees.setIcon(QtWidgets.QMessageBox.Question)
         self._message_box_pour_sauvegarde_donnees.setText(u"Voulez-vous sauvegarder les données avant de quitter l'application ?")
-        self._message_box_pour_sauvegarde_donnees.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        self._message_box_pour_sauvegarde_donnees.setDefaultButton(QtGui.QMessageBox.Yes)
-        self._message_box_pour_sauvegarde_donnees.setEscapeButton(QtGui.QMessageBox.No)
+        self._message_box_pour_sauvegarde_donnees.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        self._message_box_pour_sauvegarde_donnees.setDefaultButton(QtWidgets.QMessageBox.Yes)
+        self._message_box_pour_sauvegarde_donnees.setEscapeButton(QtWidgets.QMessageBox.No)
         
         # On lance la fenêtre et on récupère le résultat du clic sur l'un des boutons via l'attribut "_choix_sauvegarde_donnees"
         
@@ -511,7 +504,7 @@ class Controleur(QtGui.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         # --- Si L'utilisateur a souhaité sauvegarder les données : on fait appel à la méthode "actions_avant_de_quitter_l_application"
         # --- Sinon on ne fait rien et l'application se ferme
         
-        if self._choix_sauvegarde_donnees == QtGui.QMessageBox.Yes:
+        if self._choix_sauvegarde_donnees == QtWidgets.QMessageBox.Yes:
         # L'utilisateur a souhaité sauvegardé les données
             
             self.actions_avant_de_quitter_l_application()
@@ -522,7 +515,7 @@ class Controleur(QtGui.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
             Méthode qui permet de quitter l'application
         """
         
-        QtGui.qApp.quit()
+        QtWidgets.qApp.quit()
         
     
     def aller_sur_le_site_de_la_banque(self):
@@ -607,7 +600,7 @@ class Controleur(QtGui.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         """
         
         self._total_calculatrice = float(texte) / 2.0
-        self.ajouter_entree_TV_Balance(option = True)
+        self.ajouter_entree_TV_Balance(option=True)
         
     
     def lancement_calculatrice(self):
@@ -695,14 +688,14 @@ class Controleur(QtGui.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         
         ### Création d'une instance de menu QMenu
         
-        self._menu_contextuel = QtGui.QMenu()
+        self._menu_contextuel = QtWidgets.QMenu()
         
         
         ### Création de l'action liée à la calculatrice pour les trajets, action qui va être liée au menu contextuel
         
         # Création de l'action intitulée "Calculatrice pour les trajets"
-        self._actionCalculatricePourLesTrajets = QtGui.QAction("Calculatrice pour les trajets", self)
-        
+        self._actionCalculatricePourLesTrajets = QtWidgets.QAction("Calculatrice pour les trajets", self)
+
         # Assignation du raccourci clavier "Ctrl+T" à cette action
         self._actionCalculatricePourLesTrajets.setShortcut(QtGui.QKeySequence("Ctrl+T"))
         
@@ -721,8 +714,8 @@ class Controleur(QtGui.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         ### Création de l'action liée à la calculatrice pour les trajets, action qui va être liée au menu contextuel
         
         # Création de l'action intitulée "modification_des_options_d_enregistrement"
-        self._actionModificationDesOptionsDEnregistrement = QtGui.QAction("Options d'enregistrement", self)
-        
+        self._actionModificationDesOptionsDEnregistrement = QtWidgets.QAction("Options d'enregistrement", self)
+
         # Assignation du raccourci clavier "Ctrl+O" à cette action
         self._actionModificationDesOptionsDEnregistrement.setShortcut(QtGui.QKeySequence("Ctrl+O"))
         
@@ -742,7 +735,7 @@ class Controleur(QtGui.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         
         # Lancement du menu contextuel
         # --- l'option QtGui.QCursor.pos() permet d'ouvrir le menu contextuel à l'emplacement du pointeur
-        self._menu_contextuel.exec_(QtGui.QCursor.pos())     
+        self._menu_contextuel.exec_(QtGui.QCursor.pos())
         
     
     def connections_des_widgets(self):
@@ -768,7 +761,7 @@ class Controleur(QtGui.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         
         
         ### Connexion de l'icône de fermeture (la croix blanche sur fond rouge en haut à droite de la fenêtre)
-        ### Pour rappel self._app est le nom de l'instance QtGui.QApplication passé en argument à la classe (voir le module lancement.py)
+        ### Pour rappel self._app est le nom de l'instance QtWidgets.QApplication passé en argument à la classe (voir le module lancement.py)
         
         self._app.aboutToQuit.connect(self.sauvegarde_des_donnees)                    
         
