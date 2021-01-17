@@ -42,7 +42,7 @@ class SCQRegExpValidator(QtGui.QRegExpValidator):
             if pos == 2:
 
                 # si le jour indiqué est supérieur à 31 on retourne une entrée invalide
-                # (le format doit être tel que spécifié ici)
+                # (le format de retour doit être tel que spécifié ici)
                 if int(ch) > 31:
 
                     return QtGui.QValidator.Invalid, pos
@@ -54,7 +54,7 @@ class SCQRegExpValidator(QtGui.QRegExpValidator):
                 ch_extrait = ch.split("/")[1]
 
                 # si le mois indiqué est supérieur à 12 on retourne une entrée invalide
-                # (le format doit être tel que spécifié ici)
+                # (le format de retour doit être tel que spécifié ici)
                 if int(ch_extrait) > 12:
 
                     return QtGui.QValidator.Invalid, pos
@@ -84,12 +84,12 @@ class SCQDoubleValidation(QtGui.QDoubleValidator):
         # on vérifie que la chaîne de caractère n'est pas vide
         if ch not in ['']:
 
-            # # on vérifie que le premier caractère tapé n'est pas le point ('.')
-            # # si c'est le cas alors on retourne une entrée invalide
-            # # (le format de retour doit être tel que spécifié ici)
-            # if pos == 1 and ch in ['.']:
-            #
-            #     return QtGui.QValidator.Invalid, pos
+            # on vérifie que le premier caractère tapé n'est pas le point ('.')
+            # si c'est le cas alors on retourne une entrée invalide
+            # (le format de retour doit être tel que spécifié ici)
+            if pos == 1 and ch in ['.']:
+
+                return QtGui.QValidator.Invalid, pos
 
             # on vérifie que le premier caractère tapé n'est pas le signe moins ('-') si la borne inférieur est positive
             # si c'est le cas alors on retourne une entrée invalide
@@ -119,7 +119,7 @@ class SCQDoubleValidation(QtGui.QDoubleValidator):
             else:
 
                 # si ce n'est pas le cas alors on retourne une entrée invalide
-                # (le format doit être tel que spécifié ici)
+                # (le format de retour doit être tel que spécifié ici)
                 if float(ch) < self._borne_inferieure or float(ch) > self._borne_superieure:
 
                     return QtGui.QValidator.Invalid, pos
@@ -149,28 +149,27 @@ class SCItemDelegateTVComptes(QtWidgets.QStyledItemDelegate):
         """
             Méthode qui permet d'affecter un Qvalidator à certaines cellules du TableView
         """
-        
+
         # Vérification de la validité de l'index
         if not index.isValid():
-            
+
             return 0
-            
-        
+
         # Récupération du numéro de la colonne active
         colonne = index.column()
-        
+
         # Affectation du Validator si la colonne active se trouve dans la liste des colonnes concernées
         if colonne in self._liste_des_colonnes_concernees:
-            
+
             editeur = QtWidgets.QLineEdit(widget)
             validateur = SCQDoubleValidation(self._borne_inf, self._borne_sup)
             validateur.setDecimals(self._nombre_de_decimales)
             editeur.setValidator(validateur)
-            
+
             return editeur
-            
+
         return super(SCItemDelegateTVComptes, self).createEditor(widget, option, index)
-        
+
 
 class SCItemDelegateTVBalance(QtWidgets.QStyledItemDelegate):
     """
