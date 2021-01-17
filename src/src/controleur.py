@@ -21,7 +21,8 @@ from src.src.CalculatricePourLesDeplacements import CalculatricePourLesDeplaceme
 import src.src.SousClassementDesQValidators as SousClassementDesQValidators
 from src.src.OptionsPourLEnregistrement import OptionsPourLEnregistrement
 
-# Import des autres librairiesimport sys
+# Import des autres librairies
+import sys
 import os
 from datetime import datetime
 import webbrowser
@@ -61,7 +62,7 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
 
         # Attributs
 
-        self._nom_du_fichier_de_configuration = "Configuration.json"
+        self._nom_du_fichier_de_configuration = "conf.json"
         self._emplacement_absolu_du_fichier_de_configuration = os.path.join(os.getcwd(), self._nom_du_fichier_de_configuration)
         self._contenu_du_fichier_de_configuration = []
 
@@ -331,13 +332,12 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         # Calcul des différents totaux à partir des informations des QLabels
         self._total_lui = float(self.L_total_comptes_lui.text()) + float(self.L_total_balance_lui.text()) + float(self.L_total_annee_precedente_lui.text())
         self._total_elle = float(self.L_total_comptes_elle.text()) + float(self.L_total_balance_elle.text()) + float(self.L_total_annee_precedente_elle.text())
-        # self._total = float(self.L_total_comptes_lui.text()) + float(self.L_total_comptes_elle.text())
         self._total = self._total_lui + self._total_elle
 
         # Mise-à-jour des valeurs dans la fenêtre de l'appli
-        self.L_Total.setText(str(self._total))
-        self.L_Total_lui.setText(str(self._total_lui))
-        self.L_Total_elle.setText(str(self._total_elle))
+        self.L_Total.setText(str(round(self._total, 2)))
+        self.L_Total_lui.setText(str(round(self._total_lui, 2)))
+        self.L_Total_elle.setText(str(round(self._total_elle, 2)))
 
 
     def mise_en_forme_des_totaux(self):

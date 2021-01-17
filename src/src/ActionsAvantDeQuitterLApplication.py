@@ -1,28 +1,23 @@
-# coding: utf-8
+"""
+    Module qui contient la classe ActionsAvantDeQuitterLApplication pour l'application des comptes
+"""
 
-""" Module qui contient la classe ActionsAvantDeQuitterLApplication pour l'application des comptes """
-
-
-### Paramètres globaux
-
-__author__ = "Julien LEPAIN"
-__version__ = 1.0
-__all__ = ["ActionsAvantDeQuitterLApplication"]
-
-
-### Import des librairies
+# ======================================================================================================================
+# Import des librairies
+# ======================================================================================================================
 
 # Import des librairies qui contiennent le modèle
-from EnvoiMail import EnvoiMail
+from src.src.EnvoiMail import EnvoiMail
 
 # Import des autres librairies
 import os
 import shutil
 from datetime import datetime
-import pandas as pd
 
 
-### Définitions des classes
+# ======================================================================================================================
+# Définitions des classes
+# ======================================================================================================================
 
 class ActionsAvantDeQuitterLApplication(object):
     """
@@ -147,11 +142,3 @@ class ActionsAvantDeQuitterLApplication(object):
         if self._option_enregistrement_envoi_fichiers:
             
             self.envoi_des_fichiers_de_donnees()
-            
-
-### Utilisation
-
-if __name__ == "__main__":
-    
-    print(u"Ce module n'est pas voué à être exécuté seul")
-    

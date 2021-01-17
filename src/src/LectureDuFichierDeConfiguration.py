@@ -1,26 +1,24 @@
-﻿# coding: utf-8
+﻿"""
+    Module qui contient la classe LectureDuFichierDeConfiguration pour l'application des comptes
+"""
 
-""" Module qui contient la classe LectureDuFichierDeConfiguration pour l'application des comptes """
-
-
-### Paramètres globaux
-
-__author__ = "Julien LEPAIN"
-__version__ = 1.0
 __all__ = ["LectureDuFichierDeConfiguration"]
 
-
-### Import des librairies
+# ======================================================================================================================
+# Import des librairies
+# ======================================================================================================================
 
 import os
 import json
 
 
-### Définitions des classes
+# ======================================================================================================================
+# Définitions des classes
+# ======================================================================================================================
 
 class LectureDuFichierDeConfiguration(object):
     """
-        Classe de lecture du cintenu du fichier de configuration de l'application des comptes
+        Classe de lecture du contenu du fichier de configuration de l'application des comptes
     """
     
     def __init__(self, emplacement_absolu_du_fichier_de_configuration):
@@ -86,11 +84,3 @@ class LectureDuFichierDeConfiguration(object):
         with open(self._emplacement_absolu_du_fichier_de_configuration, 'r') as fichier_de_configuration:
             
             self._contenu_du_fichier_de_configuration = json.load(fichier_de_configuration)     # ATTENTION : il faut que le fichier JSON soit encodé en ANSI sinon impossible de le lire !
-            
-
-### Utilisation
-
-if __name__ == "__main__":
-    
-    print(u"Ce module n'est pas voué à être exécuté seul")
-    

@@ -1,38 +1,32 @@
-﻿# coding: utf-8
+﻿"""
+    Module qui contient la classe EnvoiMail pour l'application des comptes
+"""
 
-""" Module qui contient la classe EnvoiMail pour l'application des comptes """
-
-
-### Paramètres globaux
-
-__author__ = "Julien LEPAIN"
-__version__ = 1.0
-__all__ = ["EnvoiMail"]
 __documentation__ = ["https://broux.developpez.com/articles/protocoles/smtp/"]
 
-
-### Import des librairies
+# ======================================================================================================================
+# Import des librairies
+# ======================================================================================================================
 
 # Import des librairies graphiques
-from PyQt4 import QtGui, QtCore
-import sys
-# import MDP
-import MDP_II
+from PyQt5 import QtCore, QtWidgets
+import src.IHM.MDP_II as MDP_II
 
 # Import des autres librairies
-import smtplib                                  # SMTP pour Simple Mail Transfer Protocol
-from email.MIMEMultipart import MIMEMultipart   # creuser ce que fait exactement cette librairie
-from email.MIMEText import MIMEText             # creuser ce que fait exactement cette librairie
-from email.MIMEBase import MIMEBase             # creuser ce que fait exactement cette librairie
+import smtplib                                   # SMTP pour Simple Mail Transfer Protocol
+from email.mime.multipart import MIMEMultipart   # creuser ce que fait exactement cette librairie
+from email.mime.text import MIMEText             # creuser ce que fait exactement cette librairie
+from email.mime.base import MIMEBase             # creuser ce que fait exactement cette librairie
 from email import encoders
 import os
 from datetime import datetime
 
 
-### Définitions des classes
+# ======================================================================================================================
+# Définitions des classes
+# ======================================================================================================================
 
-# class RecuperationMDP(QtGui.QDialog, MDP.Ui_Dialog):
-class RecuperationMDP(QtGui.QDialog, MDP_II.Ui_Dialog):
+class RecuperationMDP(QtWidgets.QDialog, MDP_II.Ui_Dialog):
     """
         Classe qui permet de récupérer le mot de passe pour la connexion à la boîte mail
     """
@@ -67,7 +61,7 @@ class RecuperationMDP(QtGui.QDialog, MDP_II.Ui_Dialog):
         
         
         # Renvoie la taille de l'écran
-        taille_ecran = QtGui.QDesktopWidget().screenGeometry()
+        taille_ecran = QtWidgets.QDesktopWidget().screenGeometry()
         
         # Renvoie la taille de la fenêtre de l'application
         taille_fenetre = self.geometry()
@@ -93,7 +87,7 @@ class RecuperationMDP(QtGui.QDialog, MDP_II.Ui_Dialog):
         """
         
         # Permet de mettre des ronds à la place des caractères pour masquer le mot de passe
-        self.LE_MDP.setEchoMode(QtGui.QLineEdit.Password)
+        self.LE_MDP.setEchoMode(QtWidgets.QLineEdit.Password)
         
         # Connexion, lors de l'appui sur la touche "Entrée", du QLineEdit à la méthode "recuperation_du_mot_de_passe"
         self.LE_MDP.returnPressed.connect(self.recuperation_du_mot_de_passe)
@@ -137,11 +131,6 @@ class EnvoiMail(object):
         # Initialisation
         self.configurer_les_elements_du_mail()
         
-    
-    ### Accesseurs et mutateurs
-    
-    # Nothing
-    
     
     ### Méthodes
     
@@ -258,11 +247,3 @@ class EnvoiMail(object):
                     
         # Commande pour quitter la connexion
         mailserver.quit()
-        
-
-### Utilisation
-
-if __name__ == "__main__":
-    
-    print(u"Ce module n'a pas vocation à être exécuté seul.")
-    

@@ -1,32 +1,26 @@
-﻿# coding: utf-8
+﻿"""
+    Module qui contient la classe CalculatricePourLesDeplacements pour l'application des comptes
+"""
 
-""" Module qui contient la classe CalculatricePourLesDeplacements pour l'application des comptes """
-
-
-### Paramètres globaux
-
-__author__ = "Julien LEPAIN"
-__version__ = 1.0
 __all__ = ["CalculatricePourLesDeplacements"]
 
-
-### Import des librairies
+# ======================================================================================================================
+# Import des librairies
+# ======================================================================================================================
 
 # Import des librairies graphiques
-from PyQt4 import QtGui, QtCore
-# import Calculatrice_trajets
-import Calculatrice_trajets_II
-import SousClassementDesQValidators
+from PyQt5 import QtCore, QtWidgets
+import src.IHM.Calculatrice_trajets_II as Calculatrice_trajets_II
 
 # Import des autres librairies
-import os
-from datetime import datetime
+import src.src.SousClassementDesQValidators as SousClassementDesQValidators
 
 
-### Définitions des classes
+# ======================================================================================================================
+# Définitions des classes
+# ======================================================================================================================
 
-# class CalculatricePourLesDeplacements(QtGui.QDialog, Calculatrice_trajets.Ui_Dialog):
-class CalculatricePourLesDeplacements(QtGui.QDialog, Calculatrice_trajets_II.Ui_Dialog):
+class CalculatricePourLesDeplacements(QtWidgets.QDialog, Calculatrice_trajets_II.Ui_Dialog):
     """
         Classe qui permet de récupérer le mot de passe pour la connexion à la boîte mail
     """
@@ -77,7 +71,7 @@ class CalculatricePourLesDeplacements(QtGui.QDialog, Calculatrice_trajets_II.Ui_
         
         
         # Renvoie la taille de l'écran
-        taille_ecran = QtGui.QDesktopWidget().screenGeometry()
+        taille_ecran = QtWidgets.QDesktopWidget().screenGeometry()
         
         # Renvoie la taille de la fenêtre de l'application
         taille_fenetre = self.geometry()
@@ -189,11 +183,3 @@ class CalculatricePourLesDeplacements(QtGui.QDialog, Calculatrice_trajets_II.Ui_
         """
         
         self.show()
-        
-
-### Utilisation
-
-if __name__ == "__main__":
-    
-    print(u"Ce module n'a pas vocation à être exécuté seul.")
-    

@@ -1,24 +1,22 @@
-﻿# coding: utf-8
+﻿"""
+    Module qui contient les classes de sous-classement pour les QValidator pour l'application des comptes
+"""
 
-""" Module qui contient les classes de sous-classement pour les QValidator pour l'application des comptes """
-
-
-### Paramètres globaux
-
-__author__ = "Julien LEPAIN"
-__version__ = 1.0
 __all__ = ["SCQDoubleValidation",
            "SCItemDelegateTVComptes",
            "SCItemDelegateTVBalance"]
 
-
-### Import des librairies
+# ======================================================================================================================
+# Import des librairies
+# ======================================================================================================================
 
 # Import des librairies graphiques
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore, QtWidgets
 
 
-### Définitions des classes
+# ======================================================================================================================
+# Définitions des classes
+# ======================================================================================================================
 
 class SCQRegExpValidator(QtGui.QRegExpValidator):
     """
@@ -125,7 +123,7 @@ class SCQDoubleValidation(QtGui.QDoubleValidator):
         return QtGui.QDoubleValidator.validate(self, ch, pos)
         
 
-class SCItemDelegateTVComptes(QtGui.QStyledItemDelegate):
+class SCItemDelegateTVComptes(QtWidgets.QStyledItemDelegate):
     """
         Classe qui permet de sous-classer la classe QStyledItemDelegate pour le TV Comptes
     """
@@ -161,7 +159,7 @@ class SCItemDelegateTVComptes(QtGui.QStyledItemDelegate):
         # Affectation du Validator si la colonne active se trouve dans la liste des colonnes concernées
         if colonne in self._liste_des_colonnes_concernees:
             
-            editeur = QtGui.QLineEdit(widget)
+            editeur = QtWidgets.QLineEdit(widget)
             validateur = SCQDoubleValidation(self._borne_inf, self._borne_sup)
             validateur.setDecimals(self._nombre_de_decimales)
             editeur.setValidator(validateur)
@@ -171,7 +169,7 @@ class SCItemDelegateTVComptes(QtGui.QStyledItemDelegate):
         return super(SCItemDelegateTVComptes, self).createEditor(widget, option, index)
         
 
-class SCItemDelegateTVBalance(QtGui.QStyledItemDelegate):
+class SCItemDelegateTVBalance(QtWidgets.QStyledItemDelegate):
     """
         Classe qui permet de sous-classer la classe QStyledItemDelegate pour le TV Balance
     """
@@ -208,7 +206,7 @@ class SCItemDelegateTVBalance(QtGui.QStyledItemDelegate):
         if colonne in [0]:
         # colonne contenant les dates
             
-            editeur = QtGui.QLineEdit(widget)
+            editeur = QtWidgets.QLineEdit(widget)
             reg_exp = QtCore.QRegExp("[0-3][0-9]\/[0-1][0-9]\/20[0-9]{2}")
             validateur = SCQRegExpValidator()
             validateur.setRegExp(reg_exp)
@@ -219,7 +217,7 @@ class SCItemDelegateTVBalance(QtGui.QStyledItemDelegate):
         elif colonne in [2, 3]:
         # colonnes contenant les montants pour lui et elle
             
-            editeur = QtGui.QLineEdit(widget)
+            editeur = QtWidgets.QLineEdit(widget)
             validateur = SCQDoubleValidation(self._borne_inf, self._borne_sup)
             validateur.setDecimals(self._nombre_de_decimales)
             editeur.setValidator(validateur)
@@ -227,11 +225,3 @@ class SCItemDelegateTVBalance(QtGui.QStyledItemDelegate):
             return editeur
             
         return super(SCItemDelegateTVBalance, self).createEditor(widget, option, index)
-        
-
-### Utilisation
-
-if __name__ == "__main__":
-    
-    print(u"Ce module n'est pas voué a être exécuté seul")
-    

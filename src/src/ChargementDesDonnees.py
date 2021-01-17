@@ -244,7 +244,7 @@ class ChargementDesDonnees(object):
         # - le contenu du fichier que l'on place dans un dataframe
         
         with open(self._nom_absolu_du_fichier_de_donnees, 'r') as fichier_contenant_les_donnes:
-            
+
             self._premiere_ligne_du_fichier = fichier_contenant_les_donnes.readline()
             self._date_de_mise_a_jour = self._premiere_ligne_du_fichier.split(',')[0].strip()
             

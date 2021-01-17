@@ -1,25 +1,23 @@
-﻿# coding: utf-8
+﻿"""
+    Module qui contient la classe OptionsPourLEnregistrement pour l'application des comptes
+"""
 
-""" Module qui contient la classe OptionsPourLEnregistrement pour l'application des comptes """
-
-
-### Paramètres globaux
-
-__author__ = "Julien LEPAIN"
-__version__ = 1.0
 __all__ = ["OptionsPourLEnregistrement"]
 
-
-### Import des librairies
+# ======================================================================================================================
+# Import des librairies
+# ======================================================================================================================
 
 # Import des librairies graphiques
-from PyQt4 import QtGui, QtCore
-import Options_d_enregistrement
+from PyQt5 import QtCore, QtWidgets
+import src.IHM.Options_d_enregistrement as Options_d_enregistrement
 
 
-### Définitions des classes
+# ======================================================================================================================
+# Définitions des classes
+# ======================================================================================================================
 
-class OptionsPourLEnregistrement(QtGui.QDialog, Options_d_enregistrement.Ui_Dialog):
+class OptionsPourLEnregistrement(QtWidgets.QDialog, Options_d_enregistrement.Ui_Dialog):
     """
         Classe qui permet de récupérer les options pour d'enregistrement
     """
@@ -59,7 +57,7 @@ class OptionsPourLEnregistrement(QtGui.QDialog, Options_d_enregistrement.Ui_Dial
         
         
         # Renvoie la taille de l'écran
-        taille_ecran = QtGui.QDesktopWidget().screenGeometry()
+        taille_ecran = QtWidgets.QDesktopWidget().screenGeometry()
         
         # Renvoie la taille de la fenêtre de l'application
         taille_fenetre = self.geometry()
@@ -94,11 +92,3 @@ class OptionsPourLEnregistrement(QtGui.QDialog, Options_d_enregistrement.Ui_Dial
         """
         
         self.show()
-        
-
-### Utilisation
-
-if __name__ == "__main__":
-    
-    print(u"Ce module n'a pas vocation à être exécuté seul.")
-    

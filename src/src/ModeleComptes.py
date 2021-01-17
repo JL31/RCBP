@@ -1,22 +1,18 @@
-﻿# coding: utf-8
+﻿"""
+    Module qui contient la classe ModeleComptes pour l'application des comptes
+"""
 
-""" Module qui contient la classe ModeleComptes pour l'application des comptes """
+# ======================================================================================================================
+# Import des librairies
+# ======================================================================================================================
 
-
-### Paramètres globaux
-
-__author__ = "Julien LEPAIN"
-__version__ = 1.0
-__all__ = ["ModeleComptes"]
-
-
-### Import des librairies
-
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore
 import numpy as np
 
 
-### Définitions des classes
+# ======================================================================================================================
+# Définitions des classes
+# ======================================================================================================================
 
 class ModeleComptes(QtCore.QAbstractTableModel):
     """ 
@@ -77,8 +73,9 @@ class ModeleComptes(QtCore.QAbstractTableModel):
             if role == QtCore.Qt.DisplayRole:
             # Si c'est pour de l'affichage on récupère seulement les données
                 
-                return str(self._donnees.ix[index.row()][index.column()])
-                
+                # return str(self._donnees.ix[index.row()][index.column()])
+                return str(self._donnees.loc[index.row()][index.column()])
+
             elif role == QtCore.Qt.BackgroundRole and not statut_total:
             # Si la somme des montants de lui et de elle n'est pas égale au montant total on colorie les cellules des montants de lui et de elle en orange (RGB : 255, 170, 0)
                 
@@ -150,15 +147,8 @@ class ModeleComptes(QtCore.QAbstractTableModel):
         valeur_convertie = np.float64(valeur.toFloat()[0])              # valeur est un objet QVariant qu'il faut convertir en float via la méthode toFloat, méthode qui retourne un tuple contenant la valeur convertie (en position 0) ainsi qu'un booléen (en position 1)
                                                                         # il est ensuite nécessaire de convertir ce float en numpy.float64 pour être cohérent vis-à-vis des données préalablement chargées
         
-        self._donnees.ix[ligne, colonne] = round(valeur_convertie, 3)   # on arrondi à trois chiffres après la virgule pour éviter les co....... du style : je tape 2.35 et cela affiche 2.34999958
+        # self._donnees.ix[ligne, colonne] = round(valeur_convertie, 3)   # on arrondi à trois chiffres après la virgule pour éviter les co....... du style : je tape 2.35 et cela affiche 2.34999958
+        self._donnees.loc[ligne, colonne] = round(valeur_convertie, 3)   # on arrondi à trois chiffres après la virgule pour éviter les co....... du style : je tape 2.35 et cela affiche 2.34999958
         self.dataChanged.emit(index, index)
         
         return True
-        
-
-### Utilisation
-
-if __name__ == "__main__":
-    
-    print(u"Ce module n'est pas voué à être exécuté seul")
-    

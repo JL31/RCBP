@@ -1,22 +1,18 @@
-﻿# coding: utf-8
+﻿"""
+    Module qui contient la classe ModeleBalance pour l'application des comptes
+"""
 
-""" Module qui contient la classe ModeleBalance pour l'application des comptes """
+# ======================================================================================================================
+# Import des librairies
+# ======================================================================================================================
 
-
-### Paramètres globaux
-
-__author__ = "Julien LEPAIN"
-__version__ = 1.0
-__all__ = ["ModeleBalance"]
-
-
-### Import des librairies
-
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore
 import numpy as np
 
 
-### Définitions des classes
+# ======================================================================================================================
+# Définitions des classes
+# ======================================================================================================================
 
 class ModeleBalance(QtCore.QAbstractTableModel):
     """ 
@@ -76,21 +72,22 @@ class ModeleBalance(QtCore.QAbstractTableModel):
             if role == QtCore.Qt.DisplayRole:
             # Si c'est pour de l'affichage on récupère seulement les données
                 
-                return unicode(self._donnees.ix[index.row()][index.column()])
-                
+                # return self._donnees.ix[index.row()][index.column()]
+                return self._donnees.loc[index.row()][index.column()]
+
             elif role == QtCore.Qt.BackgroundRole and not statut_total:
             # Si les valeurs absolues des montants de lui et de elle ne sont pas égales on colorie les cellules des montants de lui et de elle en orange (RGB : 255, 170, 0)
                 
                 if index.column() in [2, 3]:
                     
-                    return QtGui.QBrush(QtGui.QColor(255,170,0))
+                    return QtGui.QBrush(QtGui.QColor(255, 170, 0))
                     
             elif role == QtCore.Qt.BackgroundRole and statut_total:
             # Si les valeurs absolues des montants de lui et de elle sont égales on colorie les cellules des montants de lui et de elle en gris
                 
                 if index.column() in [2, 3]:
                     
-                    return QtGui.QBrush(QtGui.QColor(90,90,90))
+                    return QtGui.QBrush(QtGui.QColor(90, 90, 90))
                     
         return None
         
@@ -120,7 +117,7 @@ class ModeleBalance(QtCore.QAbstractTableModel):
             Méthode qui permet de modifier les données lorsque l'utilisateur a modifié la valeur d'une cellule
         """
         
-         ##◙# Index invalide
+         ### Index invalide
         if not index.isValid():
             
             return False
@@ -141,26 +138,20 @@ class ModeleBalance(QtCore.QAbstractTableModel):
             
             valeur_convertie = np.float64(valeur.toFloat()[0])          # valeur est un objet QVariant qu'il faut convertir en float via la méthode toFloat, méthode qui retourne un tuple contenant la valeur convertie (en position 0) ainsi qu'un booléen (en position 1)
                                                                         # il est ensuite nécessaire de convertir ce float en numpy.float64 pour être cohérent vis-à-vis des données préalablement chargées
-            self._donnees.ix[ligne, colonne] = round(valeur_convertie, 3)   # on arrondi à trois chiffres après la virgule pour éviter les co....... du style : je tape 2.35 et cela affiche 2.34999958
-            
+            # self._donnees.ix[ligne, colonne] = round(valeur_convertie, 3)   # on arrondi à trois chiffres après la virgule pour éviter les co....... du style : je tape 2.35 et cela affiche 2.34999958
+            self._donnees.loc[ligne, colonne] = round(valeur_convertie, 3)   # on arrondi à trois chiffres après la virgule pour éviter les co....... du style : je tape 2.35 et cela affiche 2.34999958
+
         else:
         # Colonnes contenant la date et le Libellé
             
             valeur_convertie = valeur.toString()
-            self._donnees.ix[ligne, colonne] = unicode(valeur_convertie)
-            
+            # self._donnees.ix[ligne, colonne] = valeur_convertie
+            self._donnees.loc[ligne, colonne] = valeur_convertie
+
         
         self.dataChanged.emit(index, index)
         
         return True
-        
-
-### Utilisation
-
-if __name__ == "__main__":
-    
-    print(u"Ce module n'est pas voué à être exécuté seul")
-    
 
 # date
 # [0-3][0-9]\/[0-1][0-9]\/20[0-9]{2}
