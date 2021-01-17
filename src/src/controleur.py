@@ -252,7 +252,8 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         # Création de l'instance de la classe ModelModeleBalanceeComptes
         self._modele_balance = ModeleBalance(self._donnees_balance)
 
-        # Permet de connecter le signal 'dataChanged' émis par l'instance du modèle (ici '_modele_balance') à la méthode chargée de mettre à jour les totaux (ici 'remplissage_des_totaux_comptes')
+        # Permet de connecter le signal 'dataChanged' émis par l'instance du modèle (ici '_modele_balance')
+        # à la méthode chargée de mettre à jour les totaux (ici 'remplissage_des_totaux_comptes')
         self._modele_balance.dataChanged.connect(self.remplissage_des_totaux_balance)
 
         # Affectation du modèle au TV balance
