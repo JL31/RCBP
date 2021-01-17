@@ -111,47 +111,43 @@ class ModeleBalance(QtCore.QAbstractTableModel):
         """
             Méthode qui permet de modifier les données lorsque l'utilisateur a modifié la valeur d'une cellule
         """
-        
-         ### Index invalide
+
+        ### Index invalide
         if not index.isValid():
-            
+
             return False
-            
+
         ### Rôle invalide
         if role != QtCore.Qt.EditRole:
-            
+
             return False
-            
+
         ### Modification de la donnée
-        
+
         # on récupère les index de la ligne et de la colonne sélectionnée
         ligne = index.row()
         colonne = index.column()
 
-        if colonne in [2, 3]:
         # Colonnes contenant les montants pour lui et elle
+        if colonne in [2, 3]:
 
-            # valeur est un objet QVariant qu'il faut convertir en float via la méthode toFloat,
-            # méthode qui retourne un tuple contenant la valeur convertie (en position 0)
-            # ainsi qu'un booléen (en position 1)
-            # il est ensuite nécessaire de convertir ce float en numpy.float64
+            # valeur est une chaîne de carcatères qu'il faut convertir en numpy.float64
             # pour être cohérent vis-à-vis des données préalablement chargées
-            print(f"valeur : {valeur} ({type(valeur)})")
-            valeur_convertie = np.float64(valeur.toFloat()[0])
+            valeur_convertie = np.float64(valeur)
 
-            # self._donnees.ix[ligne, colonne] = round(valeur_convertie, 3)   # on arrondi à trois chiffres après la virgule pour éviter les co....... du style : je tape 2.35 et cela affiche 2.34999958
             # on arrondi à trois chiffres après la virgule pour éviter les co....... du style :
             # je tape 2.35 et ça affiche 2.34999958
-            self._donnees.loc[ligne, colonne] = round(valeur_convertie, 3)
+            col_names = self._donnees.columns.values
+            self._donnees[col_names[colonne]] = self._donnees[col_names[colonne]].replace(
+                self._donnees.loc[ligne][colonne],
+                round(valeur_convertie, 3)
+            )
 
-        else:
         # Colonnes contenant la date et le Libellé
-            
-            valeur_convertie = valeur.toString()
-            # self._donnees.ix[ligne, colonne] = valeur_convertie
-            self._donnees.loc[ligne, colonne] = valeur_convertie
+        else:
 
-        
+            self._donnees.loc[ligne, colonne] = valeur
+
         self.dataChanged.emit(index, index)
-        
+
         return True

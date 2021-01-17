@@ -151,8 +151,10 @@ class ModeleComptes(QtCore.QAbstractTableModel):
         # je tape 2.35 et cela affiche 2.34999958
         # self._donnees.columns.values permet d'obtenir une liste des noms des colonnes
         col_names = self._donnees.columns.values
-        self._donnees[col_names[colonne]] = self._donnees[col_names[colonne]].replace(self._donnees.loc[ligne][colonne],
-                                                                                      round(valeur_convertie, 3))
+        self._donnees[col_names[colonne]] = self._donnees[col_names[colonne]].replace(
+            self._donnees.loc[ligne][colonne],
+            round(valeur_convertie, 3)
+        )
 
         self.dataChanged.emit(index, index)
 
