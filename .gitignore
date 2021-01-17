@@ -3,3 +3,4 @@ data/
 github_token.txt
 .idea/
 src/src/__pycache__/
+src/IHM/__pycache__/

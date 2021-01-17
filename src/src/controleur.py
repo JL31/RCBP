@@ -783,11 +783,10 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         """
 
         self.show()
-        
+
 
 ### Utilisation
 
 if __name__ == "__main__":
-    
-    print(u"Ce module n'est pas voué a être exécuté seul")
-    
+
+    print("Ce module n'est pas voué a être exécuté seul")

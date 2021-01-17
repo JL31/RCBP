@@ -1,31 +1,18 @@
-# -*- coding: utf-8 -*-
-
 # Form implementation generated from reading ui file '02_MDP_2.ui'
-#
-# Created: Fri Jan 18 16:35:05 2019
-#      by: PyQt4 UI code generator 4.11.2
-#
-# WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
-    def _fromUtf8(s):
-        return s
-
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtWidgets.QApplication.UnicodeUTF8
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+        return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+        return QtWidgets.QApplication.translate(context, text, disambig)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
-        Dialog.setObjectName(_fromUtf8("Dialog"))
+        Dialog.setObjectName("Dialog")
         Dialog.resize(518, 105)
         Dialog.setMinimumSize(QtCore.QSize(518, 105))
         Dialog.setMaximumSize(QtCore.QSize(518, 105))
@@ -49,9 +36,9 @@ class Ui_Dialog(object):
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Window, brush)
         Dialog.setPalette(palette)
-        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
-        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.label = QtGui.QLabel(Dialog)
+        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.label = QtWidgets.QLabel(Dialog)
         self.label.setMinimumSize(QtCore.QSize(500, 20))
         self.label.setMaximumSize(QtCore.QSize(500, 20))
         palette = QtGui.QPalette()
@@ -77,9 +64,9 @@ class Ui_Dialog(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label.setFont(font)
-        self.label.setObjectName(_fromUtf8("label"))
+        self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
-        self.LE_MDP = QtGui.QLineEdit(Dialog)
+        self.LE_MDP = QtWidgets.QLineEdit(Dialog)
         self.LE_MDP.setMinimumSize(QtCore.QSize(500, 20))
         self.LE_MDP.setMaximumSize(QtCore.QSize(500, 20))
         palette = QtGui.QPalette()
@@ -138,12 +125,12 @@ class Ui_Dialog(object):
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Window, brush)
         self.LE_MDP.setPalette(palette)
-        self.LE_MDP.setStyleSheet(_fromUtf8("background-color: rgb(120, 120, 120);\n"
+        self.LE_MDP.setStyleSheet("background-color: rgb(120, 120, 120);\n"
 "color: rgb(0, 0, 0);\n"
-"border: 1px solid rgb(240, 240, 240);"))
-        self.LE_MDP.setText(_fromUtf8(""))
-        self.LE_MDP.setEchoMode(QtGui.QLineEdit.Normal)
-        self.LE_MDP.setObjectName(_fromUtf8("LE_MDP"))
+"border: 1px solid rgb(240, 240, 240);")
+        self.LE_MDP.setText("")
+        self.LE_MDP.setEchoMode(QtWidgets.QLineEdit.Normal)
+        self.LE_MDP.setObjectName("LE_MDP")
         self.verticalLayout.addWidget(self.LE_MDP)
 
         self.retranslateUi(Dialog)
