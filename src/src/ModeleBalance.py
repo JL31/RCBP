@@ -127,7 +127,7 @@ class ModeleBalance(QtCore.QAbstractTableModel):
         # on récupère les index de la ligne et de la colonne sélectionnée
         ligne = index.row()
         colonne = index.column()
-        
+
         if colonne in [2, 3]:
         # Colonnes contenant les montants pour lui et elle
 
@@ -136,6 +136,7 @@ class ModeleBalance(QtCore.QAbstractTableModel):
             # ainsi qu'un booléen (en position 1)
             # il est ensuite nécessaire de convertir ce float en numpy.float64
             # pour être cohérent vis-à-vis des données préalablement chargées
+            print(f"valeur : {valeur} ({type(valeur)})")
             valeur_convertie = np.float64(valeur.toFloat()[0])
 
             # self._donnees.ix[ligne, colonne] = round(valeur_convertie, 3)   # on arrondi à trois chiffres après la virgule pour éviter les co....... du style : je tape 2.35 et cela affiche 2.34999958

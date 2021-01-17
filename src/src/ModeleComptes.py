@@ -143,18 +143,16 @@ class ModeleComptes(QtCore.QAbstractTableModel):
         ligne = index.row()
         colonne = index.column()
 
-        # valeur est un objet QVariant qu'il faut convertir en float via la méthode toFloat,
-        # méthode qui retourne un tuple contenant la valeur convertie (en position 0)
-        # ainsi qu'un booléen (en position 1)
-
-        # il est ensuite nécessaire de convertir ce float en numpy.float64
+        # valeur est une chaîne de carcatères qu'il faut convertir en numpy.float64
         # pour être cohérent vis-à-vis des données préalablement chargées
-        valeur_convertie = np.float64(valeur.toFloat()[0])
+        valeur_convertie = np.float64(valeur)
 
         # on arrondi à trois chiffres après la virgule pour éviter les co....... du style :
         # je tape 2.35 et cela affiche 2.34999958
-        # self._donnees.ix[ligne, colonne] = round(valeur_convertie, 3)
-        self._donnees.loc[ligne, colonne] = round(valeur_convertie, 3)
+        # self._donnees.columns.values permet d'obtenir une liste des noms des colonnes
+        col_names = self._donnees.columns.values
+        self._donnees[col_names[colonne]] = self._donnees[col_names[colonne]].replace(self._donnees.loc[ligne][colonne],
+                                                                                      round(valeur_convertie, 3))
 
         self.dataChanged.emit(index, index)
 
