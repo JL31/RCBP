@@ -111,8 +111,13 @@ class CalculatricePourLesDeplacements(QtWidgets.QDialog, Calculatrice_trajets_II
         self._contenu_LE_Distance       = self.LE_Distance.text()
         self._contenu_LE_Prix_carburant = self.LE_Prix_carburant.text()
         self._contenu_LE_Consommation   = self.LE_Consommation.text()
-        
-        
+
+        # Remplacement des virgules par des points selon le séparateur de décimales
+        if QtCore.QLocale().decimalPoint() == ",":
+            self._contenu_LE_Distance = self._contenu_LE_Distance.replace(",", ".")
+            self._contenu_LE_Prix_carburant = self._contenu_LE_Prix_carburant.replace(",", ".")
+            self._contenu_LE_Consommation = self._contenu_LE_Consommation.replace(",", ".")
+
         # Récupération de la distance
         
         if self._contenu_LE_Distance != "":

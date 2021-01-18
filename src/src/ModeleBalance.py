@@ -122,31 +122,37 @@ class ModeleBalance(QtCore.QAbstractTableModel):
 
             return False
 
+        # Cellule vide
+        if not valeur:
+
+            return False
+
         ### Modification de la donnée
 
-        # on récupère les index de la ligne et de la colonne sélectionnée
+        # on récupère les index de la ligne et de la colonne sélectionnée, ainsi que les noms des colonnes
         ligne = index.row()
         colonne = index.column()
+
+        # liste des noms des colonnes
+        col_names = self._donnees.columns.values
 
         # Colonnes contenant les montants pour lui et elle
         if colonne in [2, 3]:
 
             # valeur est une chaîne de carcatères qu'il faut convertir en numpy.float64
             # pour être cohérent vis-à-vis des données préalablement chargées
+            # il faut également remplacer les virgules par des points si le séparateur de décimales est la virgule
+            valeur = valeur.replace(",", ".") if QtCore.QLocale().decimalPoint() == "," else valeur
             valeur_convertie = np.float64(valeur)
 
             # on arrondi à trois chiffres après la virgule pour éviter les co....... du style :
             # je tape 2.35 et ça affiche 2.34999958
-            col_names = self._donnees.columns.values
-            self._donnees[col_names[colonne]] = self._donnees[col_names[colonne]].replace(
-                self._donnees.loc[ligne][colonne],
-                round(valeur_convertie, 3)
-            )
+            self._donnees.loc[ligne, col_names[colonne]] = round(valeur_convertie, 3)
 
         # Colonnes contenant la date et le Libellé
         else:
 
-            self._donnees.loc[ligne, colonne] = valeur
+            self._donnees.loc[ligne, col_names[colonne]] = valeur
 
         self.dataChanged.emit(index, index)
 

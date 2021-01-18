@@ -22,7 +22,6 @@ import src.src.SousClassementDesQValidators as SousClassementDesQValidators
 from src.src.OptionsPourLEnregistrement import OptionsPourLEnregistrement
 
 # Import des autres librairies
-import sys
 import os
 from datetime import datetime
 import webbrowser
@@ -113,14 +112,6 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
 
         self.actions_d_initialisation()
 
-
-    ### Accesseurs et mutateurs
-
-    # Nothing
-
-
-    ### Méthodes
-
     def positionnement_de_la_fenetre_sur_l_ecran(self):
         """
             Méthode qui permet de positioner la fenêtre sur l'écran, en l'occurence de la centrer
@@ -139,13 +130,13 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         # Place la fenêtre au milieu de l'écran
         self.move((taille_ecran.width() - taille_fenetre.width()) / 2, (taille_ecran.height() - taille_fenetre.height()) / 2)
 
-
     def actions_d_initialisation(self):
         """
             Méthode qui permet d'effectuer certaines actions d'initialisations 
         """
 
-        # Récupération des informations de configuration, i.e. lecture du fichier de configuration nommé configuration.json
+        # Récupération des informations de configuration,
+        # i.e. lecture du fichier de configuration nommé configuration.json
         self.recuperation_des_informations_de_configuration()
 
         # Récupération et remplissage du TV Comptes + mise-à-jour des totaux
@@ -173,7 +164,6 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         # Définition, paramétrage et affectation des QValidator
         self.parametrage_et_affectation_des_QValidator()
 
-
     def recuperation_des_informations_de_configuration(self):
         """
             Méthode qui permet de récupérer les informations de configuration de l'appli
@@ -190,7 +180,6 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         # Affectation du contenu du fichier de configuration à l'attribut correspondant
         self._contenu_du_fichier_de_configuration = self._instance_de_lecture_du_fichier_de_configuration.get_contenu_du_fichier_de_configuration()
 
-
     def recuperation_des_donnees_comptes(self):
         """
             Méthode qui permet de récupérer les données pour l'onglet des comptes
@@ -205,7 +194,6 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         # Affectation des données récupérées à l'attribut correspondant
         self._donnees_comptes = self._instance_de_chargement_comptes.get_donnees()
 
-
     def recuperation_des_donnees_balance(self):
         """
             Méthode qui permet de récupérer les données pour l'onglet de la balance
@@ -219,7 +207,6 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
 
         # Affectation des données récupérées à l'attribut correspondant
         self._donnees_balance = self._instance_de_chargement_balance.get_donnees()
-
 
     def remplissage_du_TV_Comptes(self):
         """
@@ -242,7 +229,6 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         # # # # # à retravailler !!!
 
         self.TV_Comptes.setColumnWidth(1, 394)
-
 
     def remplissage_du_TV_Balance(self):
         """
@@ -490,7 +476,7 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
 
         self._message_box_pour_sauvegarde_donnees = QtWidgets.QMessageBox()
 
-        # On configure l'instance créée (titre, icône, message, types de boutons et actiosn par défaut)
+        # On configure l'instance créée (titre, icône, message, types de boutons et actions par défaut)
 
         self._message_box_pour_sauvegarde_donnees.setWindowTitle(u"Sauvegarde des données ?")
         self._message_box_pour_sauvegarde_donnees.setIcon(QtWidgets.QMessageBox.Question)
@@ -529,7 +515,7 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         webbrowser.open(self._contenu_du_fichier_de_configuration["url_banque"])
 
 
-    def ajouter_entree_TV_Balance(self, option = False):
+    def ajouter_entree_TV_Balance(self, option=False):
         """
             Méthode qui permet d'ajouter une entrée dans le TV Balance
         """
@@ -541,7 +527,6 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
 
             self._TVB_date    = self.CW_Choix_de_la_date.selectedDate().toString('dd/MM/yyyy')
             self._TVB_libelle = self.LE_Libelle.text()
-            # self._TVB_montant = np.float64(self.LE_Montant.text())
             self._TVB_montant = np.float64(self.LE_Montant.text()) / 2.0
             self._TVB_payeur  = self.CB_payeur.currentText()
 
@@ -568,10 +553,10 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         # Dictionnaire contenant les données qui seront ajoutées
 
         self._dico_donnees_a_ajouter = {
-            u"Date"       : str(self._TVB_date),
-            u"Libellé"    : str(self._TVB_libelle),
-            u"Montant lui" : self._montant_pour_ajout_balance,
-            u"Montant elle" : (-1 * self._montant_pour_ajout_balance)
+            "Date": str(self._TVB_date),
+            "Libellé": str(self._TVB_libelle),
+            "Montant lui": self._montant_pour_ajout_balance,
+            "Montant elle": (-1 * self._montant_pour_ajout_balance)
         }
 
         # Concaténation des données à ajouter avec les données existantes

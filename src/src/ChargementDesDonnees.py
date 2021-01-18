@@ -1,22 +1,20 @@
-﻿# coding: utf-8
+﻿"""
+    Module qui contient la classe ChargementDesDonnees pour l'application des comptes
+"""
 
-""" Module qui contient la classe ChargementDesDonnees pour l'application des comptes """
-
-
-### Paramètres globaux
-
-__author__ = "Julien LEPAIN"
-__version__ = 1.0
 __all__ = ["ChargementDesDonnees"]
 
-
-### Import des librairies
+# ======================================================================================================================
+# Import des librairies
+# ======================================================================================================================
 
 import os
 import pandas as pd
 
 
-### Définitions des classes
+# ======================================================================================================================
+# Définitions des classes
+# ======================================================================================================================
 
 class ChargementDesDonnees(object):
     """
@@ -36,7 +34,7 @@ class ChargementDesDonnees(object):
         self._nom_absolu_du_fichier_de_donnees = ""
         
         self._separator = ','
-        self._encoding = 'iso-8859-1'
+        self._encoding = 'utf-8'
         self._nombre_de_lignes_a_ignorer = 1
         
         self._date_de_mise_a_jour = None
@@ -282,11 +280,3 @@ class ChargementDesDonnees(object):
         
         df_donnees = self._donnees
         self._total_elle = df_donnees['Montant elle'].sum()
-        
-
-### Utilisation
-
-if __name__ == "__main__":
-    
-    print(u"Ce module n'est pas voué a être exécuté seul")
-    
