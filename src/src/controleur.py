@@ -415,7 +415,8 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         """
 
         # Création d'une instance QFileDialog pour demander à l'utilisateur de choisir l'emplacement du fichier
-        fichier_CSV = str(QtWidgets.QFileDialog.getOpenFileName(filter=self._filtre_fichier_a_importer))
+        # la fonction 'getOpenFileName' renvoie un tuple avec, un premier élément, le nom du fichier sélectionné
+        fichier_CSV = QtWidgets.QFileDialog.getOpenFileName(filter=self._filtre_fichier_a_importer)[0]
 
         # Vérification que l'utilisateur a bien rentré un nom pour le fichier
         if fichier_CSV:

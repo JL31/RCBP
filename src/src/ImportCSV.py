@@ -125,8 +125,8 @@ class ImportCSV(object):
         
             # Récupération de la dernière ligne des données déjà chargées
             
-            ligne_derniere_donnee_deja_chargee = self._donnees_deja_chargees.ix[0, :]
-            
+            ligne_derniere_donnee_deja_chargee = self._donnees_deja_chargees.loc[0]
+
             # Conversion des dates en objet datetime.strptime avant Vérifications
             
             derniere_date_donnees_importees = datetime.strptime(self._donnees_importees["Date"].values[-1], "%d/%m/%Y")
@@ -143,19 +143,21 @@ class ImportCSV(object):
                 
             else:
             # On récupère, dans les données à importer, les lignes qui sont dans les données à importer mais pas dans celles déjà chargées
-                
-                liste_des_index = self._donnees_importees[(self._donnees_importees[u"Date"] == ligne_derniere_donnee_deja_chargee[u"Date"]) & \
-                                                          (self._donnees_importees[u"Libellé"] == ligne_derniere_donnee_deja_chargee[u"Libellé"]) & \
-                                                          (self._donnees_importees[u"Montant(EUROS)"] == ligne_derniere_donnee_deja_chargee[u"Montant"]) \
-                                                         ].index
+
+                condition1 = self._donnees_importees["Date"] == ligne_derniere_donnee_deja_chargee["Date"]
+                condition2 = self._donnees_importees["Libellé"] == ligne_derniere_donnee_deja_chargee["Libellé"]
+                condition3 = self._donnees_importees["Montant(EUROS)"] == ligne_derniere_donnee_deja_chargee["Montant"]
+
+                liste_des_index = self._donnees_importees[condition1 and condition2 and condition3].index
                 
                 indice_pour_extraction = liste_des_index[0] - 1
                 
                 # Il est possible qu'il y ait des cas où il y aurait deux fois la même ligne, 
                 # La ligne précédente permet de s'affranchir d'un éventuel problème dans cette situation (on prend la première référence)
                 
-                self._extrait_des_donnees_importees = self._donnees_importees.ix[:indice_pour_extraction]
-                
+                # self._extrait_des_donnees_importees = self._donnees_importees.ix[:indice_pour_extraction]
+                self._extrait_des_donnees_importees = self._donnees_importees.loc[:indice_pour_extraction, :]
+
         else:
         # Les données déjà chargées sont vides donc on récupère toutes les données à importer
             
@@ -171,53 +173,74 @@ class ImportCSV(object):
         """
             Méthode qui permet de traiter les données importées
         """
-        
-        ### Traitements des donnes à importer :
+
+        # Traitements des donnes à importer :
         # - on renomme la colonne 'Montant(EUROS)' en 'Montant'
         # - on calcule les Montant lui et Montant elle à partir du Montant selon les cas
-        
-        self._extrait_des_donnees_importees = self._extrait_des_donnees_importees.rename(columns = {"Montant(EUROS)": "Montant"})
-        
-        
-        ### Traitement selon le cas : on itère sur les indices du dataframe contenant l'extrait des données importées
+
+        self._extrait_des_donnees_importees = self._extrait_des_donnees_importees.rename(columns={"Montant(EUROS)": "Montant"})
+
+        # Traitement selon le cas : on itère sur les indices du dataframe contenant l'extrait des données importées
         for indice_ligne in self._extrait_des_donnees_importees.index:
-            
-            # initialisation du booléen qui permet de savoir si le libellé a été trouvé dans l'une des listes (pour lui ou pour elle)
+
+            # initialisation du booléen qui permet de savoir si le libellé a été trouvé dans l'une des listes
+            # (pour lui ou pour elle)
             libelle_trouve = False
-            
+
             # on itère sur les éléments de la liste des libellés pour lui
             for indice, element in enumerate(self._liste_des_libelles_lui):
-                
-                if element in self._donnees_importees.ix[indice_ligne][u"Libellé"]:
-                # le libellé a été trouvé dans la liste des libellés pour lui : on lui attribue la totalité du montant (et on passe le booléen libelle_trouve à True)
-                    
-                    self._extrait_des_donnees_importees.set_value(indice_ligne, "Montant lui", self._extrait_des_donnees_importees.ix[indice_ligne]["Montant"])
+
+                # le libellé a été trouvé dans la liste des libellés pour lui :
+                # on lui attribue la totalité du montant (et on passe le booléen libelle_trouve à True)
+                if element in self._donnees_importees.loc[self._donnees_importees.index[indice_ligne], "Libellé"]:
+
+                    self._extrait_des_donnees_importees.set_value(
+                        indice_ligne,
+                        "Montant lui",
+                        self._extrait_des_donnees_importees.loc[
+                            self._extrait_des_donnees_importees.index[indice_ligne],
+                            "Montant"
+                        ]
+                    )
                     libelle_trouve = True
-                    
+
             # on itère sur les éléments de la liste des libellés pour elle
             for indice, element in enumerate(self._liste_des_libelles_elle):
-                
-                if element in self._donnees_importees.ix[indice_ligne][u"Libellé"]:
-                # le libellé a été trouvé dans la liste des libellés pour elle : on lui attribue la totalité du montant (et on passe le booléen libelle_trouve à True)
-                    
-                    self._extrait_des_donnees_importees.set_value(indice_ligne, "Montant elle", self._extrait_des_donnees_importees.ix[indice_ligne]["Montant"])
+
+                # le libellé a été trouvé dans la liste des libellés pour elle :
+                # on lui attribue la totalité du montant (et on passe le booléen libelle_trouve à True)
+                if element in self._donnees_importees.loc[self._extrait_des_donnees_importees.index[indice_ligne], "Libellé"]:
+
+                    self._extrait_des_donnees_importees.set_value(
+                        indice_ligne,
+                        "Montant elle",
+                        self._extrait_des_donnees_importees.loc[
+                            self._extrait_des_donnees_importees.index[indice_ligne],
+                            "Montant"
+                        ]
+                    )
                     libelle_trouve = True
-                    
+
             # si le libellé n'a été trouvé dans aucune des listes alors on divise le montant en deux parts égales
             if not libelle_trouve:
-                
-                self._extrait_des_donnees_importees.set_value(indice_ligne, "Montant lui", self._extrait_des_donnees_importees.ix[indice_ligne]["Montant"] / 2.0)
-                self._extrait_des_donnees_importees.set_value(indice_ligne, "Montant elle", self._extrait_des_donnees_importees.ix[indice_ligne]["Montant"] / 2.0)
-                
-        
-        ### Il faut ensuite ajouter ce dataframe à celui existant : 
-        
-        self._donnees_concatenees = pd.concat([self._extrait_des_donnees_importees, self._donnees_deja_chargees], ignore_index = True)
-        
 
-### Utilisation
+                self._extrait_des_donnees_importees.set_value(
+                    indice_ligne,
+                    "Montant lui",
+                    self._extrait_des_donnees_importees.loc[self._extrait_des_donnees_importees.index[indice_ligne], "Montant"] / 2.0
+                )
 
-if __name__ == "__main__":
-    
-    print(u"Ce module n'est pas voué a être exécuté seul")
-    
+                self._extrait_des_donnees_importees.set_value(
+                    indice_ligne,
+                    "Montant elle",
+                    self._extrait_des_donnees_importees.loc[self._extrait_des_donnees_importees.index[indice_ligne], "Montant"] / 2.0
+                )
+
+        # Il faut ensuite ajouter ce dataframe à celui existant :
+        self._donnees_concatenees = pd.concat(
+            [
+                self._extrait_des_donnees_importees,
+                self._donnees_deja_chargees
+            ],
+            ignore_index=True
+        )
