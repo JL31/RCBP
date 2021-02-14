@@ -35,8 +35,8 @@ from typing import Dict
 
 class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
     """
-            Classe de lien entre la Vue et le Modèle
-        """
+        Classe de lien entre la Vue et le Modèle
+    """
 
     def __init__(self, app, parent=None):
         """
