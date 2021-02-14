@@ -139,27 +139,6 @@ class Ui_MainWindow(object):
 "color: rgb(240, 240, 240);")
         self.B_Import_CSV.setObjectName("B_Import_CSV")
         self.verticalLayout.addWidget(self.B_Import_CSV)
-        self.B_Traiter_lignes = QtWidgets.QPushButton(self.F_Boutons)
-        self.B_Traiter_lignes.setMinimumSize(QtCore.QSize(90, 90))
-        self.B_Traiter_lignes.setMaximumSize(QtCore.QSize(90, 90))
-        self.B_Traiter_lignes.setStyleSheet(r"background-color: qlineargradient(spread:repeat, x1:1, y1:1, x2:1, y2:0, stop:0.5 rgba(70, 70, 70, 255), stop:1 rgba(200, 200, 200, 255));\n"
-"color: rgb(240, 240, 240);")
-        self.B_Traiter_lignes.setObjectName("B_Traiter_lignes")
-        self.verticalLayout.addWidget(self.B_Traiter_lignes)
-        self.B_Impression = QtWidgets.QPushButton(self.F_Boutons)
-        self.B_Impression.setMinimumSize(QtCore.QSize(90, 90))
-        self.B_Impression.setMaximumSize(QtCore.QSize(90, 90))
-        self.B_Impression.setStyleSheet("background-color: qlineargradient(spread:repeat, x1:1, y1:1, x2:1, y2:0, stop:0.5 rgba(70, 70, 70, 255), stop:1 rgba(200, 200, 200, 255));\n"
-"color: rgb(240, 240, 240);")
-        self.B_Impression.setObjectName("B_Impression")
-        self.verticalLayout.addWidget(self.B_Impression)
-        self.B_Internet = QtWidgets.QPushButton(self.F_Boutons)
-        self.B_Internet.setMinimumSize(QtCore.QSize(90, 90))
-        self.B_Internet.setMaximumSize(QtCore.QSize(90, 90))
-        self.B_Internet.setStyleSheet("background-color: qlineargradient(spread:repeat, x1:1, y1:1, x2:1, y2:0, stop:0.5 rgba(70, 70, 70, 255), stop:1 rgba(200, 200, 200, 255));\n"
-"color: rgb(240, 240, 240);")
-        self.B_Internet.setObjectName("B_Internet")
-        self.verticalLayout.addWidget(self.B_Internet)
         spacerItem = QtWidgets.QSpacerItem(20, 110, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.B_Quitter = QtWidgets.QPushButton(self.F_Boutons)
@@ -638,14 +617,6 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Comptes", None))
         self.B_Import_CSV.setText(_translate("MainWindow", "1 - Importer\n"
 "un fichier CSV", None))
-        self.B_Traiter_lignes.setText(_translate("MainWindow", "2 - Traiter \n"
-"des lignes", None))
-        self.B_Impression.setText(_translate("MainWindow", "3 - Imprimer\n"
-"les comptes \n"
-"sur une période", None))
-        self.B_Internet.setText(_translate("MainWindow", "4 - Aller sur\n"
-"le site de \n"
-"la banque", None))
         self.B_Quitter.setText(_translate("MainWindow", "Quitter", None))
         self.label.setText(_translate("MainWindow", "TOTAL sur le compte", None))
         self.L_Nom_du_fichier_de_balance_charge.setText(_translate("MainWindow", "TextLabel", None))

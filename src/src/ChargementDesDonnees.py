@@ -4,6 +4,7 @@
 
 __all__ = ["ChargementDesDonnees"]
 
+
 # ======================================================================================================================
 # Imports
 # ======================================================================================================================
@@ -217,7 +218,7 @@ class ChargementDesDonnees(object):
 
             if self._option in ["balance"]:
 
-                self._total_annee_precedente_lui   = self._premiere_ligne_du_fichier.split(',')[1].strip()
+                self._total_annee_precedente_lui = self._premiere_ligne_du_fichier.split(',')[1].strip()
                 self._total_annee_precedente_elle = self._premiere_ligne_du_fichier.split(',')[2].strip()
 
         self._donnees = pd.read_csv(

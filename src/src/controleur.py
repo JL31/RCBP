@@ -24,9 +24,9 @@ from src.src.OptionsPourLEnregistrement import OptionsPourLEnregistrement
 # Import des autres librairies
 import os
 from datetime import datetime
-import webbrowser
 import numpy as np
 import pandas as pd
+from typing import Dict
 
 
 # ======================================================================================================================
@@ -46,21 +46,18 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         super(Controleur, self).__init__(parent)
         self.setupUi(self)
 
-        ### Attributs
-
+        # Attributs
         self._app = app
 
         # Instances des classes
-
-        self._instance_de_lecture_du_fichier_de_configuration     = None
-        self._instance_de_chargement_comptes                      = None
-        self._instance_de_chargement_balance                      = None
+        self._instance_de_lecture_du_fichier_de_configuration = None
+        self._instance_de_chargement_comptes = None
+        self._instance_de_chargement_balance = None
         self._instance_des_actions_avant_de_quitter_l_application = None
-        self._calculatrice_pour_les_trajets                       = None
-        self._modification_des_options_d_enregistrement           = None
+        self._calculatrice_pour_les_trajets = None
+        self._modification_des_options_d_enregistrement = None
 
         # Attributs
-
         self._nom_du_fichier_de_configuration = "conf.json"
         self._emplacement_absolu_du_fichier_de_configuration = os.path.join(os.getcwd(), self._nom_du_fichier_de_configuration)
         self._contenu_du_fichier_de_configuration = []
@@ -95,7 +92,7 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         self._total_calculatrice = 0.0
 
         self._message_box_pour_sauvegarde_donnees = None
-        self._choix_sauvegarde_donnees            = None
+        self._choix_sauvegarde_donnees = None
 
         self._menu_contextuel = None
         self._actionCalculatricePourLesTrajets = None
@@ -104,12 +101,10 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         self._option_enregistrement_copie_fichiers = False
         self._option_enregistrement_envoi_fichiers = False
 
-        ### Positionnement de la fenêtre sur l'écran
-
+        # Positionnement de la fenêtre sur l'écran
         self.positionnement_de_la_fenetre_sur_l_ecran()
 
-        ### Initialisation de l'application (via la méthode actions_d_initialisation)
-
+        # Initialisation de l'application (via la méthode actions_d_initialisation)
         self.actions_d_initialisation()
 
     def positionnement_de_la_fenetre_sur_l_ecran(self):
@@ -117,9 +112,7 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
             Méthode qui permet de positioner la fenêtre sur l'écran, en l'occurence de la centrer
         """
 
-
         # # # # # # # # # # pas sûr que ça fonctionne correctement !!!
-
 
         # Renvoie la taille de l'écran
         taille_ecran = QtWidgets.QDesktopWidget().screenGeometry()
@@ -128,7 +121,10 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         taille_fenetre = self.geometry()
 
         # Place la fenêtre au milieu de l'écran
-        self.move((taille_ecran.width() - taille_fenetre.width()) / 2, (taille_ecran.height() - taille_fenetre.height()) / 2)
+        self.move(
+            (taille_ecran.width() - taille_fenetre.width()) / 2,
+            (taille_ecran.height() - taille_fenetre.height()) / 2
+        )
 
     def actions_d_initialisation(self):
         """
@@ -178,7 +174,7 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         self._instance_de_lecture_du_fichier_de_configuration.lecture_du_fichier()
 
         # Affectation du contenu du fichier de configuration à l'attribut correspondant
-        self._contenu_du_fichier_de_configuration = self._instance_de_lecture_du_fichier_de_configuration.get_contenu_du_fichier_de_configuration()
+        self._contenu_du_fichier_de_configuration: Dict = self._instance_de_lecture_du_fichier_de_configuration.get_contenu_du_fichier_de_configuration()
 
     def recuperation_des_donnees_comptes(self):
         """
@@ -186,7 +182,11 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         """
 
         # Création de l'instance de la classe ChargementDesDonnees pour les comptes
-        self._instance_de_chargement_comptes = ChargementDesDonnees(self._contenu_du_fichier_de_configuration["nom_absolu_du_dossier_contenant_les_donnees"], self._contenu_du_fichier_de_configuration["fichier_de_donnees_pour_les_comptes"], "comptes")
+        self._instance_de_chargement_comptes = ChargementDesDonnees(
+            self._contenu_du_fichier_de_configuration["nom_absolu_du_dossier_contenant_les_donnees"],
+            self._contenu_du_fichier_de_configuration["fichier_de_donnees_pour_les_comptes"],
+            "comptes"
+        )
 
         # Récupération des données des comptes
         self._instance_de_chargement_comptes.recuperation_des_donnes()
@@ -200,7 +200,11 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         """
 
         # Création de l'instance de la classe ChargementDesDonnees pour la balance
-        self._instance_de_chargement_balance = ChargementDesDonnees(self._contenu_du_fichier_de_configuration["nom_absolu_du_dossier_contenant_les_donnees"], self._contenu_du_fichier_de_configuration["fichier_de_donnees_pour_la_balance"], "balance")
+        self._instance_de_chargement_balance = ChargementDesDonnees(
+            self._contenu_du_fichier_de_configuration["nom_absolu_du_dossier_contenant_les_donnees"],
+            self._contenu_du_fichier_de_configuration["fichier_de_donnees_pour_la_balance"],
+            "balance"
+        )
 
         # Récupération des données de la balance
         self._instance_de_chargement_balance.recuperation_des_donnes()
@@ -216,7 +220,8 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         # Création de l'instance de la classe ModeleComptes
         self._modele_comptes = ModeleComptes(self._donnees_comptes)
 
-        # Permet de connecter le signal 'dataChanged' émis par l'instance du modèle (ici '_modele_comptes') à la méthode chargée de mettre à jour les totaux (ici 'remplissage_des_totaux_comptes')
+        # Permet de connecter le signal 'dataChanged' émis par l'instance du modèle (ici '_modele_comptes') à la méthode
+        # chargée de mettre à jour les totaux (ici 'remplissage_des_totaux_comptes')
         self._modele_comptes.dataChanged.connect(self.remplissage_des_totaux_comptes)
 
         # Affectation du modèle au TV Comptes
@@ -422,7 +427,12 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         if fichier_CSV:
 
             # Création d'une instance de la classe ImportCSV puis utilisation des méthodes de la classe
-            import_du_CSV = ImportCSV(fichier_CSV, self._donnees_comptes, self._contenu_du_fichier_de_configuration["liste_des_libelles_lui"], self._contenu_du_fichier_de_configuration["liste_des_libelles_elle"])
+            import_du_CSV = ImportCSV(
+                fichier_CSV,
+                self._donnees_comptes,
+                self._contenu_du_fichier_de_configuration["liste_des_libelles_lui"],
+                self._contenu_du_fichier_de_configuration["liste_des_libelles_elle"]
+            )
             import_du_CSV.recuperation_des_donnes()
             import_du_CSV.extraction_des_donnees()
             import_du_CSV.traitement_des_donnees_importees()
@@ -449,10 +459,9 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         """
 
         # Remplissage de l'attribut _dico_des_parametres
-
         self._dico_des_parametres["contenu_du_fichier_de_configuration"] = self._contenu_du_fichier_de_configuration
-        self._dico_des_parametres["total_annee_precedente_lui"]          = self.L_total_annee_precedente_lui.text()
-        self._dico_des_parametres["total_annee_precedente_elle"]         = self.L_total_annee_precedente_elle.text()
+        self._dico_des_parametres["total_annee_precedente_lui"] = self.L_total_annee_precedente_lui.text()
+        self._dico_des_parametres["total_annee_precedente_elle"] = self.L_total_annee_precedente_elle.text()
 
         self._dico_des_parametres["comptes"] = {}
         self._dico_des_parametres["comptes"]["nom_du_fichier_de_donnees"] = self._instance_de_chargement_comptes.get_nom_absolu_du_fichier_de_donnees()
@@ -463,10 +472,11 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         self._dico_des_parametres["balance"]["donnees"] = self._donnees_balance
 
         # Création de l'instance de la classe "ActionsAvantDeQuitterLApplication" puis exécution des actions via la méthode "execution_des_actions"
-
-        self._instance_des_actions_avant_de_quitter_l_application = ActionsAvantDeQuitterLApplication(self._dico_des_parametres, self._option_enregistrement_copie_fichiers, self._option_enregistrement_envoi_fichiers)
+        self._instance_des_actions_avant_de_quitter_l_application = ActionsAvantDeQuitterLApplication(
+            self._dico_des_parametres,
+            self._option_enregistrement_copie_fichiers,
+            self._option_enregistrement_envoi_fichiers)
         self._instance_des_actions_avant_de_quitter_l_application.execution_des_actions()
-
 
     def sauvegarde_des_donnees(self):
         """
@@ -474,11 +484,9 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         """
 
         # On créé une instance de la classe QMessageBox
-
         self._message_box_pour_sauvegarde_donnees = QtWidgets.QMessageBox()
 
         # On configure l'instance créée (titre, icône, message, types de boutons et actions par défaut)
-
         self._message_box_pour_sauvegarde_donnees.setWindowTitle(u"Sauvegarde des données ?")
         self._message_box_pour_sauvegarde_donnees.setIcon(QtWidgets.QMessageBox.Question)
         self._message_box_pour_sauvegarde_donnees.setText(u"Voulez-vous sauvegarder les données avant de quitter l'application ?")
@@ -486,19 +494,18 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         self._message_box_pour_sauvegarde_donnees.setDefaultButton(QtWidgets.QMessageBox.Yes)
         self._message_box_pour_sauvegarde_donnees.setEscapeButton(QtWidgets.QMessageBox.No)
 
-        # On lance la fenêtre et on récupère le résultat du clic sur l'un des boutons via l'attribut "_choix_sauvegarde_donnees"
-
+        # On lance la fenêtre et on récupère le résultat du clic sur l'un des boutons via l'attribut
+        # "_choix_sauvegarde_donnees"
         self._choix_sauvegarde_donnees = self._message_box_pour_sauvegarde_donnees.exec_()
 
         # Traitement du choix de l'utilisateur
-        # --- Si L'utilisateur a souhaité sauvegarder les données : on fait appel à la méthode "actions_avant_de_quitter_l_application"
-        # --- Sinon on ne fait rien et l'application se ferme
+        # Si l'utilisateur a souhaité sauvegarder les données : on fait appel à la méthode
+        # "actions_avant_de_quitter_l_application"
+        # Sinon on ne fait rien et l'application se ferme
 
+        # L'utilisateur a souhaité sauvegardé les données
         if self._choix_sauvegarde_donnees == QtWidgets.QMessageBox.Yes:
-            # L'utilisateur a souhaité sauvegardé les données
-
             self.actions_avant_de_quitter_l_application()
-
 
     def quitter_l_application(self):
         """
@@ -507,15 +514,6 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
 
         QtWidgets.qApp.quit()
 
-
-    def aller_sur_le_site_de_la_banque(self):
-        """
-            Méthode qui permet d'aller sur le site de la banque dont l'URL est précisée en attribut de la classe
-        """
-
-        webbrowser.open(self._contenu_du_fichier_de_configuration["url_banque"])
-
-
     def ajouter_entree_TV_Balance(self, option=False):
         """
             Méthode qui permet d'ajouter une entrée dans le TV Balance
@@ -523,36 +521,31 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
 
         # Si l'option est à False c'est que l'utilisateur a renseigné toutes les entrées dans la GUI
 
+        # Récupération des données dans la GUI
         if not option:
-            # Récupération des données dans la GUI
 
-            self._TVB_date    = self.CW_Choix_de_la_date.selectedDate().toString('dd/MM/yyyy')
+            self._TVB_date = self.CW_Choix_de_la_date.selectedDate().toString('dd/MM/yyyy')
             self._TVB_libelle = self.LE_Libelle.text()
-            self._TVB_montant = np.float64(self.LE_Montant.text()) / 2.0
-            self._TVB_payeur  = self.CB_payeur.currentText()
+            self._TVB_montant = np.float64(self.LE_Montant.text().replace(",", ".")) / 2.0
+            self._TVB_payeur = self.CB_payeur.currentText()
 
+        # Sinon c'est que l'utilisateur souhaite ajouter une nouvelle entrée via la calculatrice pour les trajets
+        # Dans ce cas certaines valeurs seront renseignées par défaut
         else:
-            # Sinon c'est que l'utilisateur souhaite ajouter une nouvelle entrée via la calculatrice pour les trajets
-            # Dans ce cas certaines valeurs seront renseignées par défaut
 
-            self._TVB_date    = datetime.now().strftime("%d/%m/%Y")
+            self._TVB_date = datetime.now().strftime("%d/%m/%Y")
             self._TVB_libelle = "A/R x-x"
             self._TVB_montant = np.float64(self._total_calculatrice)
-            self._TVB_payeur  = "lui"
-
+            self._TVB_payeur = "lui"
 
         # Selon la valeur du ComboBox on définit la valeur du montant à ajouter
-
         if self._TVB_payeur in ['lui']:
-
             self._montant_pour_ajout_balance = self._TVB_montant
 
         elif self._TVB_payeur in ['elle']:
-
             self._montant_pour_ajout_balance = -1 * self._TVB_montant
 
         # Dictionnaire contenant les données qui seront ajoutées
-
         self._dico_donnees_a_ajouter = {
             "Date": str(self._TVB_date),
             "Libellé": str(self._TVB_libelle),
@@ -561,7 +554,6 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         }
 
         # Concaténation des données à ajouter avec les données existantes
-
         self._donnees_a_concatener = []
         self._donnees_a_concatener.insert(0, self._dico_donnees_a_ajouter)
 
@@ -569,18 +561,14 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
         self._donnees_balance = pd.concat([pd.DataFrame(self._donnees_a_concatener), self._donnees_balance], ignore_index=True)
 
         # Mise-à-jour du modèle avec les données concaténées
-
         self._modele_balance.set_donnees(self._donnees_balance)
         self._modele_balance.layoutChanged.emit()                   # prendre des infos sur cette ligne pour expliquer le fonctionnement
 
         # Mise-à-jour des données dans l'instance de chargement des données de la balance
-
         self._instance_de_chargement_balance.set_donnees(self._donnees_balance)
 
         # Mise-à-jour des totaux de la balance
-
         self.remplissage_des_totaux_balance()
-
 
     @QtCore.pyqtSlot(str)
     def recuperation_du_total(self, texte):
@@ -641,23 +629,6 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
 
         # Lancement de la fenêtre
         self._modification_des_options_d_enregistrement.main()
-
-
-    def traitement_des_lignes_selectionnees(self):
-        """
-            Méthode qui permet de traiter les lignes sélectionnées
-        """
-
-        pass
-
-
-    def impressions(self):
-        """
-            Méthode qui permet de traiter les impressions
-        """
-
-        pass
-
 
     def parametrage_et_affectation_des_QValidator(self):
         """
@@ -732,37 +703,26 @@ class Controleur(QtWidgets.QMainWindow, Appli_comptes_IV.Ui_MainWindow):
             Méthode qui permet de connecter les widgets
         """
 
-        ### Connexion des boutons
+        # Connexion des boutons
 
         self.B_Import_CSV.clicked.connect(self.importer_un_fichier_CSV)
-        self.B_Traiter_lignes.clicked.connect(self.traitement_des_lignes_selectionnees)
-        self.B_Impression.clicked.connect(self.impressions)
-        self.B_Internet.clicked.connect(self.aller_sur_le_site_de_la_banque)
         self.B_Ajouter_dans_balance.clicked.connect(self.ajouter_entree_TV_Balance)
         self.B_Quitter.clicked.connect(self.quitter_l_application)
 
-
-        ### Désactivation de certains boutons
-
-        self.B_Traiter_lignes.setEnabled(False)
-        self.B_Impression.setEnabled(False)
-        self.B_Internet.setEnabled(False)
-
-
-        ### Connexion de l'icône de fermeture (la croix blanche sur fond rouge en haut à droite de la fenêtre)
-        ### Pour rappel self._app est le nom de l'instance QtWidgets.QApplication passé en argument à la classe (voir le module lancement.py)
+        # Connexion de l'icône de fermeture (la croix blanche sur fond rouge en haut à droite de la fenêtre)
+        # Pour rappel self._app est le nom de l'instance QtWidgets.QApplication passé en argument à la classe
+        # (voir le module lancement.py)
 
         self._app.aboutToQuit.connect(self.sauvegarde_des_donnees)
 
-
-        ### Connexion du menu contextuel qui permet de lancer l'action associée à la calculatrice pour les trajets
+        # Connexion du menu contextuel qui permet de lancer l'action associée à la calculatrice pour les trajets
 
         # Permet de spécifier que le menu contextuel sera un menu personnalisé
         self.TW_Donnees.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
 
-        # Permet de lier l'action du clic droit à l'appel du menu contextuel qui sera défini via la méthode "menu_contextuel"
+        # Permet de lier l'action du clic droit à l'appel du menu contextuel qui sera défini via la méthode
+        # "menu_contextuel"
         self.TW_Donnees.customContextMenuRequested.connect(self.menu_contextuel)
-
 
     def main(self):
         """

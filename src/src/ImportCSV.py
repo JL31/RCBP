@@ -31,9 +31,9 @@ class ImportCSV(object):
         self._liste_des_libelles_lui = liste_des_libelles_lui
         self._liste_des_libelles_elle = liste_des_libelles_elle
 
-        self._separator = ';'
+        self._separator = ";"
         self._nombre_de_lignes_a_ignorer = 7
-        self._encoding = 'iso-8859-1'
+        self._encoding = "iso-8859-1"
         self._colonnes_a_conserver = [
             "Date",
             "Libellé",
@@ -117,8 +117,7 @@ class ImportCSV(object):
         if len(self._donnees_deja_chargees) > 0:
 
             # Récupération de la dernière ligne des données déjà chargées
-            # ligne_derniere_donnee_deja_chargee = self._donnees_deja_chargees.loc[0]
-            ligne_derniere_donnee_deja_chargee = self._donnees_deja_chargees.iloc[0, :]     # TODO : laquelle des deux ligne ???
+            ligne_derniere_donnee_deja_chargee = self._donnees_deja_chargees.iloc[0, :]
 
             # Conversion des dates en objet datetime.strptime avant Vérifications
             derniere_date_donnees_importees = datetime.strptime(self._donnees_importees["Date"].values[-1], "%d/%m/%Y")
@@ -129,25 +128,23 @@ class ImportCSV(object):
             # La dernière date des données à importer est supérieure à la première date des données déjà chargées :
             # on récupère toutes les données à importer
             if derniere_date_donnees_importees > derniere_date_donnee_deja_chargees:
-
                 self._extrait_des_donnees_importees = self._donnees_importees
 
             # On récupère, dans les données à importer, les lignes qui sont dans les données à importer mais pas dans
             # celles déjà chargées
             else:
-
                 condition1 = self._donnees_importees["Date"] == ligne_derniere_donnee_deja_chargee["Date"]
                 condition2 = self._donnees_importees["Libellé"] == ligne_derniere_donnee_deja_chargee["Libellé"]
                 condition3 = self._donnees_importees["Montant(EUROS)"] == ligne_derniere_donnee_deja_chargee["Montant"]
 
-                liste_des_index = self._donnees_importees[condition1 and condition2 and condition3].index
+                liste_des_index = self._donnees_importees[condition1 & condition2 & condition3].index
 
-                indice_pour_extraction = liste_des_index[0] - 1
+                indice_pour_extraction = liste_des_index[0]
 
                 # Il est possible qu'il y ait des cas où il y aurait deux fois la même ligne, 
                 # La ligne précédente permet de s'affranchir d'un éventuel problème dans cette situation
                 # (on prend la première référence)
-                self._extrait_des_donnees_importees = self._donnees_importees.loc[:indice_pour_extraction, :]
+                self._extrait_des_donnees_importees = self._donnees_importees.iloc[:indice_pour_extraction, :]
 
         # Les données déjà chargées sont vides donc on récupère toutes les données à importer
         else:
@@ -155,10 +152,9 @@ class ImportCSV(object):
             self._extrait_des_donnees_importees = self._donnees_importees
 
         # On initialise les colonnes Montant lui et Montant elle
+        self._extrait_des_donnees_importees.loc[self._extrait_des_donnees_importees.index[:], "Montant lui"] = 0.0
+        self._extrait_des_donnees_importees.loc[self._extrait_des_donnees_importees.index[:], "Montant elle"] = 0.0
 
-        self._extrait_des_donnees_importees["Montant lui"] = 0.0
-        self._extrait_des_donnees_importees["Montant elle"] = 0.0
-    
     def traitement_des_donnees_importees(self):
         """
             Méthode qui permet de traiter les données importées
@@ -167,7 +163,6 @@ class ImportCSV(object):
         # Traitements des donnes à importer :
         # - on renomme la colonne 'Montant(EUROS)' en 'Montant'
         # - on calcule les Montant lui et Montant elle à partir du Montant selon les cas
-
         self._extrait_des_donnees_importees = self._extrait_des_donnees_importees.rename(columns={"Montant(EUROS)": "Montant"})
 
         # Traitement selon le cas : on itère sur les indices du dataframe contenant l'extrait des données importées
@@ -182,16 +177,15 @@ class ImportCSV(object):
 
                 # le libellé a été trouvé dans la liste des libellés pour lui :
                 # on lui attribue la totalité du montant (et on passe le booléen libelle_trouve à True)
-                if element in self._donnees_importees.loc[self._donnees_importees.index[indice_ligne], "Libellé"]:
 
-                    self._extrait_des_donnees_importees.set_value(
-                        indice_ligne,
-                        "Montant lui",
-                        self._extrait_des_donnees_importees.loc[
-                            self._extrait_des_donnees_importees.index[indice_ligne],
-                            "Montant"
-                        ]
-                    )
+                if element in self._donnees_importees.loc[self._donnees_importees.index[indice_ligne], "Libellé"]:
+                    self._extrait_des_donnees_importees.loc[
+                        self._extrait_des_donnees_importees.index[indice_ligne],
+                        "Montant lui"
+                    ] = self._extrait_des_donnees_importees.loc[
+                        self._extrait_des_donnees_importees.index[indice_ligne],
+                        "Montant"
+                    ]
                     libelle_trouve = True
 
             # on itère sur les éléments de la liste des libellés pour elle
@@ -199,32 +193,35 @@ class ImportCSV(object):
 
                 # le libellé a été trouvé dans la liste des libellés pour elle :
                 # on lui attribue la totalité du montant (et on passe le booléen libelle_trouve à True)
-                if element in self._donnees_importees.loc[self._extrait_des_donnees_importees.index[indice_ligne], "Libellé"]:
 
-                    self._extrait_des_donnees_importees.set_value(
-                        indice_ligne,
-                        "Montant elle",
-                        self._extrait_des_donnees_importees.loc[
-                            self._extrait_des_donnees_importees.index[indice_ligne],
-                            "Montant"
-                        ]
-                    )
+                if element in self._donnees_importees.loc[self._extrait_des_donnees_importees.index[indice_ligne], "Libellé"]:
+                    self._extrait_des_donnees_importees.loc[
+                        self._extrait_des_donnees_importees.index[indice_ligne],
+                        "Montant elle"
+                    ] = self._extrait_des_donnees_importees.loc[
+                        self._extrait_des_donnees_importees.index[indice_ligne],
+                        "Montant"
+                    ]
                     libelle_trouve = True
 
             # si le libellé n'a été trouvé dans aucune des listes alors on divise le montant en deux parts égales
             if not libelle_trouve:
 
-                self._extrait_des_donnees_importees.set_value(
-                    indice_ligne,
-                    "Montant lui",
-                    self._extrait_des_donnees_importees.loc[self._extrait_des_donnees_importees.index[indice_ligne], "Montant"] / 2.0
-                )
+                self._extrait_des_donnees_importees.loc[
+                    self._extrait_des_donnees_importees.index[indice_ligne],
+                    "Montant lui"
+                ] = self._extrait_des_donnees_importees.loc[
+                    self._extrait_des_donnees_importees.index[indice_ligne],
+                    "Montant"
+                ] / 2.0
 
-                self._extrait_des_donnees_importees.set_value(
-                    indice_ligne,
-                    "Montant elle",
-                    self._extrait_des_donnees_importees.loc[self._extrait_des_donnees_importees.index[indice_ligne], "Montant"] / 2.0
-                )
+                self._extrait_des_donnees_importees.loc[
+                    self._extrait_des_donnees_importees.index[indice_ligne],
+                    "Montant elle"
+                ] = self._extrait_des_donnees_importees.loc[
+                        self._extrait_des_donnees_importees.index[indice_ligne],
+                        "Montant"
+                    ] / 2.0
 
         # Il faut ensuite ajouter ce dataframe à celui existant :
         self._donnees_concatenees = pd.concat(
